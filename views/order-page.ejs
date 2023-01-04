@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta
+      name="keywords"
+      content="adminkit, bootstrap, bootstrap 5, admin, dashboard, template, responsive, css, sass, html, theme, front-end, ui kit, web"
+    />
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+
+    <title>Fady Syste,</title>
+
+    <link href="css/app.css" rel="stylesheet" />
+    <link rel="stylesheet" href="./css/yousef-start.css" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        direction: rtl;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="wrapper">
+      <nav id="sidebar" class="sidebar js-sidebar">
+        <div class="sidebar-content js-simplebar">
+          <a class="sidebar-brand" href="index">
+            <span class="align-middle">Saleb .</span>
+          </a>
+
+          <ul class="sidebar-nav">
+            <li class="sidebar-header">الصفحات</li>
+
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="index">
+                <i class="align-middle" data-feather="sliders"></i>
+                <span class="align-middle">لوحه التحكم</span>
+              </a>
+            </li>
+
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="pages-sign-in">
+                <i class="align-middle" data-feather="log-in"></i>
+                <span class="align-middle">تسجيل الدخول</span>
+              </a>
+            </li>
+
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="Employers">
+                <i class="align-middle" data-feather="user"></i>
+                <span class="align-middle">الموظفين</span>
+              </a>
+            </li>
+
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="Storage">
+                <i class="align-middle" data-feather="home"></i>
+                <span class="align-middle">المخزن</span>
+              </a>
+            </li>
+
+            <!-- order item -->
+
+            <li class="sidebar-item active">
+              <a class="sidebar-link" href="order-page">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  class="feather feather-shopping-cart align-middle"
+                >
+                  <circle cx="9" cy="21" r="1"></circle>
+                  <circle cx="20" cy="21" r="1"></circle>
+                  <path
+                    d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"
+                  ></path>
+                </svg>
+                <span class="align-middle">الطلبات</span>
+              </a>
+            </li>
+
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="Start">
+                <i class="align-middle" data-feather="clipboard"></i>
+                <span class="align-middle">بدأ</span>
+              </a>
+            </li>
+            <li class="sidebar-header">اضافات</li>
+
+
+            <!-- setting item -->
+
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="setting-page">
+                <i class="align-middle" data-feather="settings"></i>
+                <span class="align-middle">اعدادات</span>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+
+      <div class="main">
+        <nav class="navbar navbar-expand navbar-light navbar-bg">
+          <a class="sidebar-toggle js-sidebar-toggle">
+            <i class="hamburger align-self-center"></i>
+          </a>
+
+          <div class="navbar-collapse collapse">
+            <ul class="navbar-nav navbar-align">
+              <li class="nav-item dropdown">
+                <a
+                  class="nav-icon dropdown-toggle"
+                  href="#"
+                  id="alertsDropdown"
+                  data-bs-toggle="dropdown"
+                >
+                  <div class="position-relative">
+                    <i class="align-middle" data-feather="bell"></i>
+                    <span class="indicator">1</span>
+                  </div>
+                </a>
+                <div
+                  class="dropdown-menu dropdown-menu-lg dropdown-menu-end py-0 me"
+                  aria-labelledby="alertsDropdown"
+                >
+                  <div class="dropdown-menu-header">1 اشعارات جديده</div>
+                  <div class="list-group">
+                    <a href="#" class="list-group-item">
+                      <div class="row g-0 align-items-center">
+                        <div class="col-2">
+                          <i
+                            class="text-danger"
+                            data-feather="alert-circle"
+                          ></i>
+                        </div>
+                        <div class="col-10">
+                          <div class="text-dark">Update completed</div>
+                          <div class="text-muted small mt-1">
+                            Restart server 12 to complete the update.
+                          </div>
+                          <div class="text-muted small mt-1">30m ago</div>
+                        </div>
+                      </div>
+                    </a>
+                  </div>
+                  <div class="dropdown-menu-footer">
+                    <a href="./notification-page" class="text-muted"
+                      >أظهار جميع الاشعارات</a
+                    >
+                  </div>
+                </div>
+              </li>
+
+              <li class="nav-item dropdown">
+                <a
+                  class="nav-icon dropdown-toggle d-inline-block d-sm-none"
+                  href="#"
+                  data-bs-toggle="dropdown"
+                >
+                  <i class="align-middle" data-feather="settings"></i>
+                </a>
+
+                <a
+                  class="nav-link dropdown-toggle d-none d-sm-inline-block"
+                  href="#"
+                  data-bs-toggle="dropdown"
+                >
+                  <img
+                    src="img/avatars/avatar.jpg"
+                    class="avatar img-fluid rounded me-1"
+                    alt="Charles Hall"
+                  />
+                  <span class="text-dark">يوسف رومانى</span>
+                </a>
+                <div class="dropdown-menu dropdown-menu-end">
+                  <a class="dropdown-item" href="pages-profile"
+                    ><i class="align-middle me-1" data-feather="user"></i>
+                    المستخدم</a
+                  >
+                  <a class="dropdown-item" href="./charts-chartjs"
+                    ><i class="align-middle me-1" data-feather="pie-chart"></i>
+                    التحليل</a
+                  >
+                </div>
+              </li>
+            </ul>
+          </div>
+        </nav>
+
+        <main class="content">
+          <div class="container-fluid p-0">
+            <h1 class="h3 mb-3">صفحه الطلبات</h1>
+
+            <div class="row">
+              <div class="col-12">
+                <div class="card">
+                  <div class="card-header">
+                    <div class="yousef-container">
+                      <div class="container-top-start"
+                      style="
+                            height: fit-content;
+                      "
+                      >
+                        <h2>ابدأ</h2>
+                        <div
+                          class="container-counter"
+                          style="
+                            height: fit-content;
+
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                          "
+                        >
+
+
+                          <a href="/detailOrder">
+                            تسجيل طلب جديد هنا 
+                          </a>
+
+                          
+                        </div>
+                      </div>
+
+                      <div class="container-bottom-history">
+                        <h2>الطلبات</h2>
+
+                        <!-- here card of history -->
+                        <div class="container-history-card" style="overflow-y: scroll;height: 300px;">
+                          <table>
+                            <tr>
+                              <td
+                                class="basic-td"
+                                style="width: clac(100% / 6)"
+                              >
+                                الاسم :
+                              </td>
+                              <td
+                                class="basic-td"
+                                style="width: clac(100% / 6)"
+                              >
+                                ماذا هو يريد :
+                              </td>
+                              <td
+                                class="basic-td"
+                                style="width: clac(100% / 6)"
+                              >
+                                كميه :
+                              </td>
+                              <td
+                                class="basic-td"
+                                style="width: clac(100% / 6);font-size: 18px;"
+                              >
+                                رقم التليفون :
+                              </td>
+                              <td
+                                class="basic-td"
+                                style="width: clac(100% / 6);font-size: 18px;"
+                              >
+                                وقت الطلب :
+                              </td>
+                              <td
+                                class="basic-td"
+                                style="width: clac(100% / 6)"
+                              >
+                                مبلغ :
+                              </td>
+                            </tr>
+
+                            
+                            
+                            <% Data.forEach(function (item) { %>
+                            <tr class="back-end-tr">
+                              <td
+                                class="back-end-td"
+                                style="width: clac(100% / 6)"
+                              >
+                                <%= item.nameOrder %>
+                              </td>
+                              <td
+                                class="back-end-td"
+                                style="width: clac(100% / 6)"
+                              >
+                              <%= item.nameSetting %>
+                              </td>
+                              <td
+                                class="back-end-td"
+                                style="width: clac(100% / 6)"
+                              >
+                              <%= item.amountOrder %>
+                              </td>
+                              <td
+                                class="back-end-td"
+                                style="width: clac(100% / 6)"
+                              >
+                              0<%= item.numberOrder %>
+                              </td>
+                              <td
+                                class="back-end-td"
+                                style="
+                                  width: clac(100% / 6);
+                                  background-color: #222e3c;
+                                  color: white;
+                                "
+                              >
+                              <%= item.TimeInOrder %>
+                              </td>
+                              <td
+                                class="back-end-td"
+                                style="width: clac(100% / 6)"
+                              > 
+
+                                <%= item.money %>
+
+                              </td>
+                              <td class="edit-td">
+                                <form action="/DeleteOrder/<%= item.idOrder %>" method="post">
+                                  <button style="background-color: white; border:1px solid white">
+                                    <i data-feather="delete"></i>
+                                  </button>
+                                </form>
+                              </td>
+                            </tr>
+                           <% }) %>
+                          </table>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </main>
+
+        <footer class="footer">
+          <div class="container-fluid">
+            <div class="row text-muted">
+              <div class="col-6 text-start">
+                <p class="mb-0">
+                  <a class="text-muted" href="#" target="_blank"
+                    ><strong>Yousef Romany 😃 </strong></a
+                  >
+                  - &copy;
+                </p>
+              </div>
+            </div>
+          </div>
+        </footer>
+      </div>
+    </div>
+
+    <script src="js/app.js"></script>
+    <script src="./js/counter.js"></script>
+  </body>
+</html>
