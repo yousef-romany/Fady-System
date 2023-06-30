@@ -1,0 +1,219 @@
+<% layout('../index') -%>
+
+<main class="content">
+  <div class="container-fluid p-0">
+    <h1 class="h3 mb-3"><strong>التحليل</strong> لوحه التحكم</h1>
+
+    <div class="row">
+      <div class="col-xl-6 col-xxl-5 d-flex">
+        <div class="w-100">
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="card">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col mt-0">
+                      <h5 class="card-title">الموظفين</h5>
+                    </div>
+
+                    <div class="col-auto">
+                      <div class="stat text-primary">
+                        <i class="align-middle" data-feather="truck"></i>
+                      </div>
+                    </div>
+                  </div>
+                  <h1 class="mt-1 mb-3">
+                    <% Data1.forEach(function ( item ) { %> <%= item.CounterEm
+                    %> <% }); %>
+                  </h1>
+                </div>
+              </div>
+              <div class="card">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col mt-0">
+                      <h5 class="card-title">المطلوب</h5>
+                    </div>
+
+                    <div class="col-auto">
+                      <div
+                        class="stat text-primary"
+                        style="background-color: #000000e0"
+                      >
+                        <i
+                          class="align-middle"
+                          data-feather="shopping-cart"
+                        ></i>
+                      </div>
+                    </div>
+                  </div>
+                  <h1 class="mt-1 mb-3">
+                    <% Data2.forEach(function ( item ) { %> <%=
+                    item.CounterOrder %> <% }); %>
+                  </h1>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6">
+              <div class="card">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col mt-0">
+                      <h5 class="card-title">الربح</h5>
+                    </div>
+
+                    <div class="col-auto">
+                      <div class="stat text-primary">
+                        <i class="align-middle" data-feather="dollar-sign"></i>
+                      </div>
+                    </div>
+                  </div>
+                  <h1 class="mt-1 mb-3">
+                    <% Data5.forEach((item) => { %> $ <%= item.NUMBBBER %> <%
+                    }); %>
+                  </h1>
+                </div>
+              </div>
+              <div class="card">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col mt-0">
+                      <h5 class="card-title">الخامات</h5>
+                    </div>
+
+                    <div class="col-auto">
+                      <div class="stat text-primary">
+                        <i
+                          class="align-middle"
+                          data-feather="shopping-cart"
+                        ></i>
+                      </div>
+                    </div>
+                  </div>
+                  <h1 class="mt-1 mb-3">
+                    <% Data6.forEach((item) => { %> <%= item.LenghtOfPROO %> <%
+                    }); %>
+                  </h1>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-xl-6 col-xxl-7">
+        <div class="card flex-fill w-100">
+          <div class="card-header">
+            <h5 class="card-title mb-0">أخر تحركات</h5>
+          </div>
+          <div class="card-body py-3">
+            <div class="chart chart-sm">
+              <canvas id="chartjs-dashboard-line"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-12 col-md-6 col-xxl-3 d-flex order-2 order-xxl-3">
+        <div class="card flex-fill w-100" style="display: none">
+          <div class="card-header">
+            <h5 class="card-title mb-0">استخدام المحرك</h5>
+          </div>
+          <div class="card-body d-flex">
+            <div class="align-self-center w-100">
+              <div class="py-3">
+                <div class="chart chart-xs">
+                  <canvas id="chartjs-dashboard-pie"></canvas>
+                </div>
+              </div>
+
+              <table class="table mb-0">
+                <tbody>
+                  <tr>
+                    <td>Chrome</td>
+                    <td class="text-end">4306</td>
+                  </tr>
+                  <tr>
+                    <td>Firefox</td>
+                    <td class="text-end">3801</td>
+                  </tr>
+                  <tr>
+                    <td>IE</td>
+                    <td class="text-end">1689</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        class="col-12 col-md-6 col-xxl-3 d-flex order-1 order-xxl-1"
+        style="direction: ltr; width: 100%"
+      >
+        <div class="card flex-fill" style="direction: ltr">
+          <div class="card-header" style="direction: ltr">
+            <h5 class="card-title mb-0">التاريخ</h5>
+          </div>
+          <div class="card-body d-flex" style="direction: ltr">
+            <div class="align-self-center w-100" style="direction: ltr">
+              <div class="chart">
+                <div id="datetimepicker-dashboard" style="direction: ltr"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-12 col-lg-8 col-xxl-9 d-flex">
+        <div class="card flex-fill">
+          <div class="card-header">
+            <h5 class="card-title mb-0">أخر طلبات</h5>
+          </div>
+          <table class="table table-hover my-0">
+            <thead>
+              <tr>
+                <th>الاسم</th>
+                <th class="d-none d-xl-table-cell">تاريخ طلب</th>
+                <th class="d-none d-xl-table-cell">رقم التليفون</th>
+                <th>الكميه</th>
+                <th class="d-none d-md-table-cell">المبلغ</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% Data3.forEach(function (item) { %>
+
+              <tr>
+                <td><%= item.nameOrder %></td>
+                <td class="d-none d-xl-table-cell"><%= item.TimeInOrder %></td>
+                <td class="d-none d-xl-table-cell"><%= item.numberOrder %></td>
+                <td>
+                  <span class="badge bg-success"><%= item.amountOrder %></span>
+                </td>
+                <td class="d-none d-md-table-cell"><%= item.money %></td>
+              </tr>
+
+              <% }); %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="col-12 col-lg-4 col-xxl-3 d-flex">
+        <div class="card flex-fill w-100">
+          <div class="card-header">
+            <h5 class="card-title mb-0">مبيعات الشهور</h5>
+          </div>
+          <div class="card-body d-flex w-100">
+            <div class="align-self-center chart chart-lg">
+              <canvas id="chartjs-dashboard-bar"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>

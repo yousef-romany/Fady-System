@@ -1,0 +1,181 @@
+<% layout('../index') -%>
+<link rel="stylesheet" href="../css/mix.css" />
+<main class="content">
+  <div class="container-fluid p-0">
+    <h1 class="h3 mb-3">صفحه خلطات</h1>
+
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header">
+            <div class="yousef-container">
+              <select id="selectOptionsProduct" class="form-select mb-3">
+                <option value="">أختر المنتج</option>
+                <% nameProduct.forEach(item => { %>
+                <option value="<%= item.ID %>"><%= item.NAMEPRODUCT %></option>
+                <% }); %>
+              </select>
+              <div class="containerSecretMix">
+                <form action="/MixSecrets" method="post" id="onSubmit">
+                  <div class="section">
+                    <label for="NameProduct"> أسم المنتج : </label>
+                    <input
+                      type="text"
+                      name="NAMEPRODUCT"
+                      id="nameProduct"
+                      class="form-control"
+                      readonly
+                      required
+                    />
+                  </div>
+                  <% RAWMATRAILS.forEach(item => { %>
+                  <div class="section">
+                    <label for="NameProduct"> <%= item.NAMEMATRAIL %> : </label>
+                    <input
+                      type="number"
+                      name="<%= item.NAMEMATRAIL %>"
+                      class="form-control"
+                      required
+                    />
+                  </div>
+                  <% }) %> <% if(RAWMATRAILS.length === 0 || nameProduct.length
+                  === 0) { %>
+                  <input
+                    type="submit"
+                    class="btn btn-primary btn-lg"
+                    value="تسجيل"
+                    disabled
+                  />
+                  <% } else { %>
+                  <input
+                    type="submit"
+                    class="btn btn-primary btn-lg"
+                    value="تسجيل"
+                  />
+                  <% } %>
+                </form>
+              </div>
+            </div>
+            <hr />
+            <span
+              style="
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: 100%;
+                font-size: 20px;
+                font-weight: 900;
+                padding: 0;
+              "
+            >
+              ...
+            </span>
+            <hr />
+            <table class="table table-hover my-0">
+              <thead>
+                <tr>
+                  <th>تعديل</th>
+                  <th class="d-none d-xl-table-cell">اسم المنتج</th>
+
+                  <% nameColumns.forEach(item => { %>
+                  <th class="d-none d-xl-table-cell"><%= item.Field %></th>
+                  <% }); %>
+                </tr>
+              </thead>
+              <tbody id="dataMonthly">
+                <% getMaxs.forEach( (item) => { %>
+                <tr id="_<%= item.ID %>">
+                  <th>
+                    <button
+                      class="btn btn-info"
+                      onclick="deleteSecretMix('<%= item.ID %>')"
+                    >
+                      <i data-feather="more-vertical"></i>
+                    </button>
+                  </th>
+                  <th class="d-none d-xl-table-cell">
+                    <%= item.NAMEPRODUCT %>
+                  </th>
+                  <form
+                    action="/UpdateMixSecrets/<%= item.ID %>/<%= item.NAMEPRODUCT %>"
+                    method="post"
+                    onsubmit="check_form()"
+                  >
+                    <% Object.entries(item).slice(2,1000).map( ([key, val] =
+                    entry) => { %>
+                    <th class="d-none d-xl-table-cell"><%= val || 0 %></th>
+                    <th class="d-none d-xl-table-cell hide">
+                      <input
+                        type="number"
+                        value="<%= val || 0 %>"
+                        name="<%= key %>"
+                        required
+                      />
+                    </th>
+                    <% }); %>
+                    <th class="d-none d-xl-table-cell hide">
+                      <input
+                        type="submit"
+                        class="btn btn-primary btn-lg"
+                        value="تعديل"
+                        required
+                      />
+                    </th>
+                  </form>
+                  <th>
+                    <form
+                      action="/deleteMix/<%= item.ID %>"
+                      id="form"
+                      method="post"
+                      onsubmit="check_form()"
+                    >
+                      <button class="btn btn-danger">x</button>
+                    </form>
+                  </th>
+                </tr>
+                <% }); %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+<script>
+  const select = document.querySelector("#selectOptionsProduct");
+  const input = document.querySelector("#nameProduct");
+  select.addEventListener("change", (eo) => {
+    input.value = select.value;
+  });
+  function deleteSecretMix(id) {
+    let input = document.querySelectorAll(`#_${parseInt(id)} th`);
+    input.forEach((item) => {
+      item.classList.toggle("hide");
+    });
+    input[0].classList.toggle("hide");
+    input[1].classList.toggle("hide");
+  }
+  let key = `<% getMaxs.forEach(item => { %>
+    <%= item.ID  %>
+  <% }) %>`;
+
+  document.querySelector("#onSubmit").addEventListener("submit", (e) => {
+    e.preventDefault();
+    if (input.value === "") {
+      alert("يرجى ان تختار المنتج");
+    } else {
+      check_form();
+      document.querySelector("#onSubmit").submit();
+    }
+  });
+
+  function sleep(lf_ms) {
+    return new Promise((resolve) => setTimeout(resolve, lf_ms));
+  }
+  async function check_form() {
+    document.querySelector(".submitLoad").classList.remove("hide");
+    await seelp(2000);
+    document.querySelector(".submitLoad").classList.remove("hide");
+  }
+</script>

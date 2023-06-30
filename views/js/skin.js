@@ -17,14 +17,6 @@ mother.forEach( item => {
     } else if (item1.target.classList == "minus dis") {
   
       let inputt1 = item.firstElementChild.nextElementSibling;
-  
-        
-
-
-
-
-
-
       let count1 = parseInt(inputt1.value) - 1;
       
       inputt1.value = count1;

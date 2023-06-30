@@ -1,0 +1,48 @@
+.yousef-container {
+    width: 100% !important;
+    height: fit-content !important;
+    padding: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+.containerSecretMix {
+    width: 100%;
+    height: fit-content;
+}
+.containerSecretMix form {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 10px;
+}
+.hide {
+    display: none !important;
+}
+th input {
+    width: 100%;
+}
+table {
+    position: relative !important;
+    empty-cells: show !important;
+}
+.notEmpty {
+    display: block !important;
+}
+table tbody tr {
+    position: relative;
+}
+table tbody tr th:last-child {
+    position: absolute;
+    left: -80px;
+    bottom: 0;
+    height: 100%;
+    border: none;
+}
+table tbody tr .form {
+    position: absolute !important;
+    right: 0;
+    top: 0;
+}

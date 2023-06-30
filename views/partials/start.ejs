@@ -1,0 +1,284 @@
+<% layout('../index') -%>
+<link rel="stylesheet" href="../css/yousef-start.css" />
+<main class="content">
+  <div class="container-fluid p-0">
+    <h1 class="h3 mb-3">صفحه منتاجات</h1>
+
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header">
+            <div class="yousef-container">
+              <div class="container-bottom-history">
+                <h2>أضف منتج</h2>
+                <!-- here card of history -->
+                <div class="container-history-card">
+                  <form
+                    action="/AddProduct"
+                    onsubmit="check_form()"
+                    style="display: flex; flex-direction: column; gap: 10px"
+                    method="post"
+                  >
+                    <div class="section">
+                      <label for="Select"> أسم المنتج</label>
+                      <input
+                        type="text"
+                        name="nameProduct"
+                        id="Select"
+                        placeholder=""
+                        required
+                        class="form-control"
+                      />
+                    </div>
+                    <input
+                      type="submit"
+                      class="btn btn-primary btn-lg"
+                      value="تسجيل"
+                    />
+                  </form>
+                </div>
+                <hr />
+                <span
+                  style="
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    width: 100%;
+                    font-size: 20px;
+                    font-weight: 900;
+                    padding: 0;
+                  "
+                >
+                  ...
+                </span>
+                <hr />
+                <div class="container-history-card">
+                  <h3>أضف المنتج فى المخزن:</h3>
+                  <form
+                    action="/StorageProduct"
+                    id="FormgetRawMatrail"
+                    style="display: flex; flex-direction: column; gap: 10px"
+                    method="post"
+                  >
+                    <div class="section">
+                      <select
+                        name="selectOption"
+                        class="form-select mb-3"
+                        id="selectOption"
+                        required
+                      >
+                        <option value="">أختر المنتج</option>
+                        <% products.forEach(item => { %>
+                        <option value="<%= item.ID %>">
+                          <%= item.NAMEPRODUCT %>
+                        </option>
+                        <% }) %>
+                      </select>
+                    </div>
+                    <div class="section">
+                      <label for="my-input">كميه ب طن :</label>
+                      <div class="container-my-input">
+                        <button
+                          class="button-my-input"
+                          type="button"
+                          id="decrement"
+                          onclick="stepper(this)"
+                        >
+                          -
+                        </button>
+                        <input
+                          type="number"
+                          step="1"
+                          value="0"
+                          min="0"
+                          max="100"
+                          id="my-input"
+                          name="amount"
+                          class="input-my-input"
+                          readonly
+                          required
+                        />
+                        <button
+                          class="button-my-input"
+                          type="button"
+                          id="increment"
+                          onclick="stepper(this)"
+                        >
+                          +
+                        </button>
+                      </div>
+                    </div>
+                    <input
+                      type="submit"
+                      class="btn btn-primary btn-lg"
+                      value="تسجيل"
+                      id="submitMixSecret"
+                    />
+                  </form>
+                </div>
+                <hr />
+                <span
+                  style="
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    width: 100%;
+                    font-size: 20px;
+                    font-weight: 900;
+                    padding: 0;
+                  "
+                >
+                  ...
+                </span>
+                <hr />
+                <div class="container-history-card">
+                  <h3>احذف المنتج :</h3>
+                  <form
+                    action="/DeleteProduct"
+                    onsubmit="check_form()"
+                    style="display: flex; flex-direction: column; gap: 10px"
+                    method="post"
+                  >
+                    <div class="section">
+                      <select
+                        name="selectOption"
+                        class="form-select mb-3"
+                        required
+                      >
+                        <option value="">احذف المنتج</option>
+                        <% products.forEach(item => { %>
+                        <option value="<%= item.ID %>">
+                          <%= item.NAMEPRODUCT %>
+                        </option>
+                        <% }) %>
+                      </select>
+                    </div>
+                    <input
+                      type="submit"
+                      class="btn btn-primary btn-lg"
+                      value="تسجيل"
+                    />
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+<div class="containerAlert"></div>
+<script>
+  const myInput = document.getElementById("my-input");
+  function stepper(btn) {
+    let id = btn.getAttribute("id");
+    let min = myInput.getAttribute("min");
+    let max = myInput.getAttribute("max");
+    let step = myInput.getAttribute("step");
+    let val = myInput.getAttribute("value");
+    let calcStep = id == "increment" ? step * 1 : step * -1;
+    let newValue = parseInt(val) + calcStep;
+
+    if (newValue >= min && newValue <= max) {
+      myInput.setAttribute("value", newValue);
+    }
+  }
+
+  function sleep(lf_ms) {
+    return new Promise((resolve) => setTimeout(resolve, lf_ms));
+  }
+  async function check_form() {
+    document.querySelector(".submitLoad").classList.remove("hide");
+    await seelp(2000);
+    document.querySelector(".submitLoad").classList.remove("hide");
+  }
+  const getRawMatrail = document.querySelector("#FormgetRawMatrail");
+  const submitMixSecret = document.querySelector("#submitMixSecret");
+  getRawMatrail.addEventListener("submit", (e) => {
+    e.preventDefault();
+    let newArray = [];
+    let valueSelect = document.querySelector("#selectOption").value;
+    let AmountvalueSelect = document.querySelector("#my-input").value;
+    fetch(`/getMixSecret/${valueSelect}`)
+      .then((res) => res.json())
+      .then((resData) => {
+        role(Object.entries(resData[0]).slice(2, 100), AmountvalueSelect);
+      })
+      .catch((err) => alert(err));
+
+    function notificationAlert(matrail) {
+      let newElement = `
+      <div class="notification" id="notification">
+        <h2>تحذير !!</h2>
+        <h5 id="alert">لا يوجد كميه كافيه من ${matrail}</h5>
+      </div>
+      `;
+      document.querySelector(".containerAlert").style.zIndex = 999;
+      document.querySelector(".containerAlert").innerHTML += newElement;
+
+      setTimeout(() => {
+        document.querySelectorAll(".notification").forEach((item) => {
+          item.classList.add("hide");
+        });
+        document.querySelector(".containerAlert").style.zIndex = -999;
+        document.querySelector(".containerAlert").innerHTML = " ";
+      }, 5000);
+    }
+
+    function role(data, amount) {
+      let pass = [];
+      let Newdata = [];
+      let NewAlert = [];
+      data.forEach((item) => {
+        let total = item[1] * amount;
+        fetch(`/notificationMixSecret/${item[0]}`)
+          .then((res) => res.json())
+          .then((resDataName) => {
+            if (resDataName[0].AMOUNTMATRAIL < total) {
+              setTimeout(notificationAlert(resDataName[0].NAMEMATRAIL), 2500);
+              throw (
+                (pass.push(false),
+                NewAlert.push([
+                  resDataName[0].NAMEMATRAIL,
+                  total,
+                  resDataName[0].IDMATRAIL,
+                ]))
+              );
+            } else {
+              throw (
+                (pass.push(true),
+                Newdata.push([
+                  resDataName[0].NAMEMATRAIL,
+                  total,
+                  resDataName[0].IDMATRAIL,
+                ]))
+              );
+            }
+          })
+          .catch((err) => console.log(err));
+      });
+      setTimeout(() => {
+        if (pass.includes(false)) {
+          // NewAlert.forEach((item) => {
+          //   notificationAlert(item[0]);
+          // });
+        } else {
+          Newdata.forEach((item) => {
+            munis(item[2], item[1]);
+          });
+        }
+      }, 100);
+    }
+
+    function munis(id, amount) {
+      fetch(`/munis/${id}/${amount}`, {
+        method: "POST",
+      })
+        .then((res) => {})
+        .catch((err) => alert(err));
+      check_form();
+      getRawMatrail.submit();
+    }
+  });
+</script>

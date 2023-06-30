@@ -1,12 +1,10 @@
 const { app, BrowserWindow } = require("electron");
 
-
 const server = require("./app");
 
 let mainWindow;
 
 function createWindow() {
-
   mainWindow = new BrowserWindow({
     width: 1600,
     height: 1000,
@@ -19,7 +17,6 @@ function createWindow() {
   mainWindow.on("closed", function () {
     mainWindow = null;
   });
-
 }
 
 app.on("ready", createWindow);

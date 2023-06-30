@@ -1,0 +1,337 @@
+<% layout('../index') -%>
+<link rel="stylesheet" href="../css/yousef-employers.css" />
+<script defer src="./js/yousef.js"></script>
+
+<main class="content">
+  <div class="container-fluid p-0">
+    <h1 class="h3 mb-3 yousef-add">
+      صفحه الموظفين ( <%= Data.length %> )
+      <div class="container-add" id="add">
+        <i class="yousef-add-item" data-feather="plus"></i>
+      </div>
+    </h1>
+
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header">
+            <div class="container-yousef" style="overflow-x: visible">
+              <% Data.forEach(function (item) { %>
+
+              <div
+                style="
+                  position: relative;
+                  padding-top: 25px;
+                  height: fit-content;
+                  width: fit-content;
+                "
+                class="card-yousef"
+              >
+                <div class="card-header-yousef">
+                  <img
+                    src="data:image/png;base64,<%= item.IMGID %>"
+                    class="imagesEmployerZoomIN"
+                  />
+                </div>
+                <div class="card-number-yousef">
+                  <h3>الرقم التليفون :</h3>
+                  &nbsp; &nbsp; &nbsp;
+                  <h4><%= item.NUMBERPHONE %></h4>
+                  <h4>0</h4>
+                </div>
+                <div class="card-id-yousef">
+                  <h3>مرتب :</h3>
+                  &nbsp; &nbsp; &nbsp;
+                  <h4><%= item.SALLARY %>/<%= item.TYPESALLARY %></h4>
+                </div>
+                <div class="card-id-yousef">
+                  <button
+                  <% if (item.TYPESALLARY === 'يومى') { %>
+                      onclick="presenceDaily('<%= item.TYPESALLARY %>','<%= item.SALLARY %>','<%= item.ID %>')"
+                  <% } else { %>
+                      onclick="presenceMonthly('<%= item.TYPESALLARY %>','<%= item.SALLARY %>','<%= item.ID %>')"
+                  <% } %>
+                  >
+                    حضور و الانصراف
+                  </button>
+                </div>
+                <div
+                  class="container-edit-delete"
+                  style="
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    font-size: 18px;
+                    position: absolute;
+                    top: -1%;
+                    right: -1%;
+                    width: 30px;
+                    height: 30px;
+                    border: 2px solid white;
+                    cursor: pointer;
+                    background-color: #eff2f5;
+                    border-radius: 8px;
+                  "
+                >
+                  <form action="/delete-employer/<%= item.ID %>" onsubmit="check_form();" method="post">
+                    <button
+                      style="
+                        width: 100%;
+                        height: 100%;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        color: white;
+                        border-radius: 8px;
+                        border: 1px solid transparent;
+                      "
+                      class="btn btn-danger"
+                    >
+                      <i data-feather="delete"></i>
+                      x
+                    </button>
+                  </form>
+                </div>
+              </div>
+
+              <% }); %>
+
+              <div
+                class="contianer-add-new-employer"
+                style="width: 100%; height: fit-content; padding: 10px"
+              >
+                <div class="container-name-of-page">اضافه موظف جديد</div>
+
+                <form
+                  action="/allEmployer"
+                  enctype="multipart/form-data"
+                  method="post"
+                >
+                  <div class="container-name">
+                    صوره البطاقه :
+                    <input
+                      class="form-control form-control-lg"
+                      type="file"
+                      name="ImgID"
+                      required
+                      class="form-control"
+                    />
+                  </div>
+                  <div class="container-number">
+                    رقم :
+                    <input
+                      class="form-control form-control-lg"
+                      type="number"
+                      id="Number"
+                      required
+                      name="Number"
+                      class="form-control"
+                    />
+                  </div>
+                  <div class="container-id">
+                    نوع الوظيفه :
+                    <select name="typeOfEmployer" class="form-select mb-3" required>
+                      <option selected>اختر</option>
+                      <option value="يومى">يومى</option>
+                      <option value="شهرى">شهرى</option>
+                    </select>
+                  </div>
+                  <div class="container-address">
+                    مرتب :
+                    <input
+                      class="form-control form-control-lg"
+                      type="number"
+                      id="sallary"
+                      required
+                      name="sallary"
+                    />
+                  </div>
+                  <div class="container-submit">
+                    <input
+                      type="submit"
+                      class="btn btn-lg btn-primary"
+                      class="btn-send"
+                      value="حفظ"
+                    />
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="showImgs hide">
+    <img src="" id="zoonIn" />
+  </div>
+  <div class="presenceContainer hide">
+    <form id="formPresence" onsubmit="check_form();" action="" method="post">
+      <div class="row">
+        <div class="row">
+          <h3>تحضير : <span id="idEmployer"></span></h3>
+          <input type="date" name="date" required />
+        </div>
+        <div class="row">
+          <h3>
+            <label for="checkBoxPresence">
+              تم الدفع :
+            </label>
+            <input type="checkbox" id="checkBoxPresence" name="chackBox" />
+          </h3>
+        </div>
+        <button>تأكيد</button>
+      </div>
+    </form>
+
+    <table class="table table-hover my-0">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th class="d-none d-xl-table-cell">تاريخ الحضور</th>
+          <th>الدفع</th>
+          <th class="d-none d-md-table-cell">المبلغ</th>
+        </tr>
+      </thead>
+      <tbody id="dailyTable">
+
+      </tbody>
+    </table>
+
+    <button class="closePresence">X</button>
+  </div>
+  <div class="presenceMonthlyContainer hide">
+    <form id="formPresenceMonthly" onsubmit="check_form();" action="" method="post">
+      <div class="row">
+        <div class="row">
+          <h3>تحضير : <span id="idEmployerMonthly"></span></h3>
+          <input type="date" required name="date" />
+        </div>
+        <button>تأكيد</button>
+      </div>
+    </form>
+
+    <form id="formcatch" onsubmit="check_form();" action="" method="post">
+      <div class="row">
+        <div class="row">
+          <h3>تقبيض : <span id="idEmployerMonthly2"></span></h3>
+          <input type="date" required name="date" id="closeDateMonthly" />
+        </div>
+        <button>تأكيد</button>
+      </div>
+    </form>
+
+    <table class="table table-hover my-0">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th class="d-none d-xl-table-cell">تاريخ الحضور</th>
+          <th>الدفع</th>
+          <th class="d-none d-md-table-cell">المبلغ</th>
+        </tr>
+      </thead>
+      <tbody id="dataMonthly">
+        
+      </tbody>
+    </table>
+
+    <button class="closePresenceMonthly">X</button>
+  </div>
+</main>
+<script>
+  let imgs = document.querySelectorAll(".imagesEmployerZoomIN");
+  const zoonIn = document.querySelector("#zoonIn");
+  imgs.forEach((item) => {
+    item.addEventListener("click", (eo) => {
+      document.querySelector(".showImgs").classList.remove("hide");
+      const srcImg = item.src;
+      zoonIn.src = srcImg;
+    });
+  });
+  zoonIn.addEventListener("click", (eo) => {
+    document.querySelector(".showImgs").classList.add("hide");
+  });
+
+  function presenceDaily(type, sallary, id) {
+    document.getElementById("checkBoxPresence").disabled = false;
+    document.querySelector(".presenceContainer").classList.remove("hide");
+    document.getElementById("idEmployer").innerHTML = id;
+    document.getElementById("formPresence").action = `/presence/${parseInt(
+      id
+    )}/${type}/${parseInt(sallary)}`;
+    fetchDataTable(id,type);
+  }
+  function presenceMonthly(type, sallary, id) {
+    document.getElementById("idEmployerMonthly").innerHTML = id;
+    document.getElementById("idEmployerMonthly2").innerHTML = id;
+    document.querySelector(".presenceMonthlyContainer").classList.remove("hide");
+    document.getElementById("formPresenceMonthly").action = `/presence/${parseInt(
+      id
+    )}/${type}/${parseInt(sallary)}`;
+    document.getElementById("formcatch").action = `/catch/${parseInt(
+      id
+    )}/${type}/${parseInt(sallary)}`;
+    fetchDataTable(id,type);
+  }
+
+
+  const closePresence = document.querySelector(".closePresence");
+  closePresence.addEventListener("click", (eo) => {
+    document.querySelector(".presenceContainer").classList.add("hide");
+    document.querySelector("#dailyTable").innerHTML = "";
+  });
+  const closePresenceMonthly = document.querySelector(".closePresenceMonthly");
+  closePresenceMonthly.addEventListener("click", (eo) => {
+    document.querySelector(".presenceMonthlyContainer").classList.add("hide");
+    document.querySelector("#dataMonthly").innerHTML = "";
+  });
+
+  const closeDateMonthly = document.querySelector("#closeDateMonthly");
+  closeDateMonthly.addEventListener("change", (eo) => {
+    if (confirm("هل انت متاكد من حسابك مع الموظف") == false) {
+      document.getElementById("checkBoxPresence").checked = false;
+    }
+  });
+  document.getElementById("checkBoxPresence").addEventListener("change", () => {
+    if (confirm("هل انت متاكد من حسابك مع الموظف") == false) {
+      document.getElementById("checkBoxPresence").checked = false;
+    }
+  });
+
+  function fetchDataTable(id , type) {
+    let table;
+    if(type === "يومى") {
+      table = document.querySelector("#dailyTable");
+    } else {
+      table = document.querySelector("#dataMonthly");
+    }
+    fetch(`/getEmployerData/${id}`)
+    .then(res => {
+      return res.json()
+    })
+    .then(resDate => {
+      
+      resDate.forEach(item => {
+        let date = new Date(item.DATE_EMPLOYER);
+        
+        let newElement = `
+        <tr>
+          <td>${item.ID}</td>
+          <td class="d-none d-xl-table-cell">${date}</td>
+          <td class="d-none d-xl-table-cell">
+            <span class="badge bg-success">${item.CHECKBOX}</span>
+          </td>
+          <td>${item.SALLARY_EMPLOYER}</td>
+        </tr>
+      `;
+      table.innerHTML += newElement;
+      })
+    })
+    .catch(err => {
+      if(err) {
+        alert("error in database")
+      }
+    })
+  }
+
+</script>

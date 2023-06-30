@@ -124,3 +124,29 @@
     width: 70%;
     height: 50%;
 }
+.containerSearch {
+    padding: 20px;
+    display: flex;
+    gap: 20px;
+}
+.containerSearch input[type="text"] {
+    width: 400px;
+    border-radius: 10px;
+    outline: none;
+    border: 1px solid black;
+}
+.containerSearch label {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.containerSearch button {
+    outline: none;
+    padding-left: 10px;
+    padding-right: 10px;
+    border-radius: 10px;
+    border: 1px solid black;
+}
+#productContainer, #RawmatrailContainer {
+    display: none;
+}

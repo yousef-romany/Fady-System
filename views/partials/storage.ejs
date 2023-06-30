@@ -1,0 +1,112 @@
+<% layout('../index') -%>
+<link rel="stylesheet" href="../css/yousef-storage.css" />
+<style></style>
+<div class="content">
+  <div class="container-fluid p-0">
+    <div class="containerSearch">
+      <input type="radio" id="Product" name="fav_type" value="Product" />
+      <label for="Product">منتجات</label><br />
+      <input type="radio" id="Rawmatrail" name="fav_type" value="Rawmatrail" />
+      <label for="Rawmatrail">مواد خام</label><br />
+      <br />
+      <button
+        style="border: none"
+        id="submitSearch"
+        class="btn btn-primary btn-lg"
+      >
+        go
+      </button>
+    </div>
+
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header">
+            <div class="container-yousef" id="productContainer">
+              <h2 style="color: #3b7ddd" id="ma1">المنتجات</h2>
+
+              <div class="card-st">
+                <div class="container-container-stor">
+                  <table class="table table-hover my-0">
+                    <thead>
+                      <tr>
+                        <th>ID</th>
+                        <th class="d-none d-xl-table-cell">اسم المنتج</th>
+                        <th>كميه / بل طن</th>
+                      </tr>
+                    </thead>
+                    <tbody id="dataMonthly">
+                      <% dataProduct.forEach(item => { %>
+                      <tr>
+                        <th><%= item.IDPRODUCT %></th>
+                        <th class="d-none d-xl-table-cell"><%= item.NAMEPRODUCT %></th>
+                        <th><%= item.AMOUNT %></th>
+                      </tr>
+                      <% }); %>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <!-- <h2>لايوجد منتجات</h2> -->
+            </div>
+            <div class="container-yousef" id="RawmatrailContainer">
+              <h2 style="color: #3b7ddd" id="ma1">مواد خام</h2>
+
+              <div class="card-st">
+                <div class="container-container-stor">
+                  <table class="table table-hover my-0">
+                    <thead>
+                      <tr>
+                        <th>ID</th>
+                        <th class="d-none d-xl-table-cell">اسم ماده خام</th>
+                        <th>كميه </th>
+                      </tr>
+                    </thead>
+                    <tbody id="dataMonthly">
+                      <% dataRawMatrail.forEach(item => { %>
+                      <tr>
+                        <th><%= item.IDMATRAIL %></th>
+                        <th class="d-none d-xl-table-cell"><%= item.NAMEMATRAIL %></th>
+                        <th><%= item.AMOUNTMATRAIL %></th>
+                      </tr>
+                      <% }); %>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <!-- <h2>لايوجد منتجات</h2> -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  const search = document.querySelector("#search");
+  const submitSearch = document.querySelector("#submitSearch");
+  const radio = document.querySelectorAll('input[name="fav_type"]');
+  submitSearch.addEventListener("click", (eo) => {
+    let selectedSize; // this is value
+    for (const radioButton of radio) {
+      if (radioButton.checked) {
+        selectedSize = radioButton.value;
+        break;
+      }
+    }
+    if (selectedSize === "Product") {
+      document.getElementById("productContainer").style.display = "block";
+      document.getElementById("RawmatrailContainer").style.display = "none";
+    } else if (selectedSize === "Rawmatrail") {
+      document.getElementById("RawmatrailContainer").style.display = "block";
+      document.getElementById("productContainer").style.display = "none";
+    } else if (selectedSize === " ") {
+      alert("رجاء أختر نوع !")
+    }
+  });
+
+  // Product
+  // Rawmatrail
+</script>
