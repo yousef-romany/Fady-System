@@ -21,6 +21,9 @@
       rel="stylesheet"
     />
     <style>
+      .massage {
+        display: flex;
+      }
       .flatpickr-rContainer {
         width: 100%;
       }
@@ -178,29 +181,9 @@
                   aria-labelledby="alertsDropdown"
                 >
                   <div class="dropdown-menu-header">1 اشعارات جديده</div>
-                  <div class="list-group">
-                    <a href="#" class="list-group-item">
-                      <div class="row g-0 align-items-center">
-                        <div class="col-2">
-                          <i
-                            class="text-danger"
-                            data-feather="alert-circle"
-                          ></i>
-                        </div>
-                        <div class="col-10">
-                          <div class="text-dark">Update completed</div>
-                          <div class="text-muted small mt-1">
-                            Restart server 12 to complete the update.
-                          </div>
-                          <div class="text-muted small mt-1">30m ago</div>
-                        </div>
-                      </div>
-                    </a>
-                  </div>
+                  <div class="list-group"></div>
                   <div class="dropdown-menu-footer">
-                    <a href="./notification-page" class="text-muted"
-                      >أظهار جميع الاشعارات</a
-                    >
+                    ??!
                   </div>
                 </div>
               </li>
@@ -268,5 +251,48 @@
       </div>
     </div>
     <script src="js/app.js"></script>
+    <script>
+      let sureMassage = [];
+      function notificationAlertMassage() {
+        fetch("/notificationAlert")
+          .then((res) => res.json())
+          .then((resData) => {
+            resData.forEach((item) => {
+              if (item.AMOUNTMATRAIL <= item.limitNotification) {
+                sureMassage.push([
+                  item.AMOUNTMATRAIL,
+                  item.limitNotification,
+                  item.NAMEMATRAIL,
+                  item.IDMATRAIL,
+                ]);
+              } else {
+              }
+            });
+          })
+          .catch((err) => console.log("error in database"));
+        setTimeout(() => {
+          document.querySelector(".indicator").innerHTML = sureMassage.length;
+          document.querySelector(".dropdown-menu-header").innerHTML = `${ sureMassage.length } اشعارات جديده`;
+          sureMassage.forEach(item => {
+            console.log(item)
+            let newELement = `
+            <a href="/Storage" class="list-group-item">
+              <div class="row g-0 align-items-center">
+                <div class="col-10">
+                  <div class="text-dark massage">مواد الخام</div>
+                  <div class="text-muted small mt-1 massage">
+                    أحذر ماده الخام ${item[2]} قاربت على النفاذ
+                  </div>
+                </div>
+              </div>
+            </a>
+          `;
+          document.querySelector(".list-group").innerHTML += newELement;
+          })
+
+        }, 100);
+      }
+      notificationAlertMassage();
+    </script>
   </body>
 </html>
