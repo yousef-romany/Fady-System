@@ -74,7 +74,7 @@ require("./routes/storage/storage")(app, connection);
 // end storage1 , storage2
 
 // start order
-require("./routes/order/order")(app, connection);
+require("./routes/order/order")(app, connection, upload);
 // end order
 
 // start setting
@@ -92,3 +92,7 @@ require("./routes/mix/mix")(app, connection);
 // start notification
 require("./routes/notification/notification")(app, connection);
 // end notification
+
+// start accounts
+require("./routes/accounts/accounts")(app, connection);
+// end accounts

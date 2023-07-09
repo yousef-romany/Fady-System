@@ -15,8 +15,8 @@ module.exports = function (app, connection, upload) {
       typeOfEmployer: req.body.typeOfEmployer,
       sallary: req.body.sallary,
     };
-
-    let sql = `INSERT INTO Emplyers ( 	IMGID ,  	NUMBERPHONE  ,SALLARY ,TYPESALLARY  ) VALUES ( '${Item.ImgID}' , ${Item.Number} , ${Item.sallary} , '${Item.typeOfEmployer}')`;
+    let sql = `
+    INSERT INTO Emplyers ( 	IMGID ,  	NUMBERPHONE  ,SALLARY ,TYPESALLARY  ) VALUES ( '${Item.ImgID}' , ${Item.Number} , ${Item.sallary} , '${Item.typeOfEmployer}')`;
     connection.query(sql, (err, result) => {
       if (err) throw err;
       res.redirect("/Employers");
@@ -27,7 +27,10 @@ module.exports = function (app, connection, upload) {
     let id = req.params["id"];
     let sql = `DELETE FROM Emplyers WHERE ID = '${id}'`;
     connection.query(sql, (err, result, fields) => {
-      if (err) throw err;
+      if (err) {
+        console.log(err);
+        res.send("error in database")
+      }
       res.redirect("/Employers");
     });
   });
@@ -40,8 +43,11 @@ module.exports = function (app, connection, upload) {
       CHECKBOX: req.body.chackBox || "off"
     };
 
-    const sql = `INSERT INTO presence (ID_EMPLOYER , DATE_EMPLOYER , TYPESALLARY , SALLARY_EMPLOYER, CHECKBOX) 
-        VALUES (${data.id}, "${data.date}", "${data.typeEmployer}", ${data.sallary}, "${data.CHECKBOX}")`;
+    const sql = `
+      INSERT INTO presence (ID_EMPLOYER, dateNow, TYPESALLARY, SALLARY_EMPLOYER, CHECKBOX) 
+        VALUES (${data.id}, "${data.date}", "${data.typeEmployer}", ${data.sallary}, "${data.CHECKBOX}")
+        ON DUPLICATE KEY UPDATE CHECKBOX = "${data.CHECKBOX}";
+      `;
     connection.query(sql, (err, result) => {
       if (err) throw res.send("error in database");
       res.redirect("/Employers");
@@ -54,7 +60,7 @@ module.exports = function (app, connection, upload) {
       date: req.body.date,
     };
     
-    const sql = `INSERT INTO catch (IDEMPLOYER , DATECATCH , SALLAERY) 
+    const sql = `INSERT INTO catch (IDEMPLOYER , dateNow , SALLAERY) 
         VALUES (${data.id}, "${data.date}", ${data.sallary})`;
     connection.query(sql, (err, result) => {
       if (err) throw res.send("error in database");
@@ -67,6 +73,13 @@ module.exports = function (app, connection, upload) {
     connection.query(sql, (err , result) => {
       if(err) throw res.send("error in database")
       res.json(result);
+    });
+  });
+  app.post("/DeletePresnce/:id", (req, res) => {
+    let sql = ` DELETE FROM presence WHERE ID = ${ req.params['id'] } `;
+    connection.query(sql , (err, result) => {
+      if (err) throw res.send("error in database");
+      res.redirect("/Employers");
     });
   });
   // end employer section

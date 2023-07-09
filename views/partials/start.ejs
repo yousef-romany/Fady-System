@@ -15,16 +15,16 @@
                 <div class="container-history-card">
                   <form
                     action="/AddProduct"
-                    onsubmit="check_form()"
                     style="display: flex; flex-direction: column; gap: 10px"
                     method="post"
+                    id="submitAddProduct"
                   >
                     <div class="section">
-                      <label for="Select"> أسم المنتج</label>
+                      <label for="NewName"> أسم المنتج</label>
                       <input
                         type="text"
-                        name="nameProduct"
-                        id="Select"
+                        name="name_Product"
+                        id="NewName"
                         placeholder=""
                         required
                         class="form-control"
@@ -70,7 +70,7 @@
                         <option value="">أختر المنتج</option>
                         <% products.forEach(item => { %>
                         <option value="<%= item.ID %>">
-                          <%= item.NAMEPRODUCT %>
+                          <%= item.NAME_PRODUCT %>
                         </option>
                         <% }) %>
                       </select>
@@ -135,7 +135,7 @@
                   <h3>احذف المنتج :</h3>
                   <form
                     action="/DeleteProduct"
-                    onsubmit="check_form()"
+                    id="role"
                     style="display: flex; flex-direction: column; gap: 10px"
                     method="post"
                   >
@@ -148,7 +148,7 @@
                         <option value="">احذف المنتج</option>
                         <% products.forEach(item => { %>
                         <option value="<%= item.ID %>">
-                          <%= item.NAMEPRODUCT %>
+                          <%= item.NAME_PRODUCT %>
                         </option>
                         <% }) %>
                       </select>
@@ -170,6 +170,13 @@
 </main>
 <div class="containerAlert"></div>
 <script>
+  document.getElementById("role").addEventListener("submit" , (e) => {
+    e.preventDefault();
+    if(confirm("سوف نحذفه من قواعد البيانات نهائيا")) {
+      check_form();
+      document.getElementById("role").submit()
+    }
+  })
   const myInput = document.getElementById("my-input");
   function stepper(btn) {
     let id = btn.getAttribute("id");
@@ -203,7 +210,11 @@
     fetch(`/getMixSecret/${valueSelect}`)
       .then((res) => res.json())
       .then((resData) => {
-        role(Object.entries(resData[0]).slice(2, 100), AmountvalueSelect);
+        if (resData.length === 0) {
+          alert("رجاء اضف خلطه اولا")
+        } else {
+          role(Object.entries(resData[0]).slice(3, 100), AmountvalueSelect);
+        }
       })
       .catch((err) => alert(err));
 
@@ -280,5 +291,26 @@
       check_form();
       getRawMatrail.submit();
     }
+  });
+  const submitAddProduct = document.querySelector("#submitAddProduct");
+  submitAddProduct.addEventListener("submit", (e) => {
+    e.preventDefault();
+    function fetchData() {
+      let NewName = document.querySelector("#NewName").value;
+      let data = [];
+
+      `<% products.forEach(item => { %>
+          ${data.push("<%= item.NAME_PRODUCT %>")}
+        <% }); %>`;
+        
+      if(data.includes(NewName)) {
+        alert("هذا الاسم مستخدم")
+      } else {
+        check_form();
+        submitAddProduct.submit();
+      }
+    }
+
+    fetchData();
   });
 </script>

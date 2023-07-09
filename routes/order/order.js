@@ -1,45 +1,56 @@
-module.exports = function (app, connection) {
-    app.get("/order-page", (request, response) => {
-        let sql =
-          "SELECT optionOrder , nameOrder , numberOrder, amountOrder , idOrder , money , nameSetting ,TimeInOrder FROM Orderr a INNER JOIN SettingPro l ON a.optionOrder = l.price;";
-        connection.query(sql, (error, result) => {
-          if (error) throw error;
-          response.render("order-page", { Data: result });
-        });
+module.exports = function (app, connection, upload) {
+  app.get("/order-page", (request, response) => {
+    let sql =
+      "SELECT * FROM product;SELECT * FROM fady.storageproduct; SELECT product.NAME_PRODUCT , orders.ID , orders.IMG , orders.AMOUNT, orders.PRICE, orders.TYPEOFBUY, orders.LASTDATINBUY, orders.dateNow FROM orders INNER JOIN product ON orders.IDPRODUCT = product.ID;";
+    connection.query(sql, (error, result) => {
+      if (error) {
+        console.log(error);
+        response.send("error in database");
+      }
+      response.render("./partials/order-page", {
+        products: result[0],
+        amountProducts: result[1],
+        orders: result[2],
       });
-      
-      app.get("/detailOrder", (request, response) => {
-        let sql = "SELECT * FROM SettingPro";
-        connection.query(sql, (err, result, fields) => {
-          if (err) throw err;
-          response.render("detailOrder", { Data: result });
-        });
-      });
-      
-      app.post("/AddOrder", (req, res) => {
-        let Item = {
-          Name: req.body.Name,
-          options: req.body.options,
-          amount: req.body.amount,
-          Number: req.body.Number,
-          TimeIn: req.body.TimeIn,
-          money: req.body.money,
-        };
-      
-        let sql = `INSERT INTO Orderr (nameOrder, optionOrder , amountOrder , TimeInOrder ,numberOrder , money) VALUES ( '${Item.Name}' ,'${Item.options}' ,'${Item.amount}' ,'${Item.TimeIn}' , '${Item.Number}' ,  '${Item.money}'); `;
-        connection.query(sql, (err, result) => {
-          if (err) throw err;
-          res.redirect("/order-page");
-        });
-      });
-      
-      app.post("/DeleteOrder/:id", (req, res) => {
-        let id = req.params["id"];
-        let sql = `DELETE FROM Orderr WHERE idOrder = '${id}'`;
-        connection.query(sql, (err, result) => {
-          if (err) throw err;
-          console.log("Number of records deleted: " + result.affectedRows);
-          res.redirect("/order-page");
-        });
-      });
-}
+    });
+  });
+
+  app.post("/AddOrder", upload.single("Img"), (req, res) => {
+    let data = {
+      Img: req.file.buffer.toString("base64"),
+      IDPRODUCT: req.body.want,
+      amount: req.body.amount,
+      total: req.body.total,
+      type: req.body.type,
+      dateNow: req.body.dateNow,
+      date: req.body.date || "true",
+      tel: req.body.tel
+    };
+    let sql = `
+      INSERT INTO orders (IMG, AMOUNT, PRICE, TYPEOFBUY, LASTDATINBUY, IDPRODUCT, dateNow, tel) VALUES ("${data.Img}", ${data.amount}, ${data.total}, "${data.type}", "${data.date}", ${data.IDPRODUCT}, "${data.dateNow}", "${ data.tel }" );
+      UPDATE storageproduct set AMOUNT = AMOUNT - ${data.amount} WHERE IDPRODUCT = ${data.IDPRODUCT}
+    `;
+    connection.query(sql, (error, result) => {
+      if (error) {
+        console.log(error);
+        res.send("error in database");
+      }
+      res.redirect("/order-page");
+    });
+  });
+  app.post("/deleteOrder/:id", (req, res) => {
+    let data = {
+      ID: req.params["id"],
+    };
+    let sql = `
+      DELETE FROM orders WHERE ID = ${data.ID} ;
+    `;
+    connection.query(sql, (error, result) => {
+      if (error) {
+        console.log(error);
+        res.send("error in database");
+      }
+      res.redirect("/order-page");
+    });
+  });
+};

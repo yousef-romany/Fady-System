@@ -1,0 +1,304 @@
+<% layout('../index') -%>
+<link rel="stylesheet" href="../css/order.css" />
+<main class="content" style="position: relative">
+  <div class="container-fluid p-0">
+    <h1 class="h3 mb-3">صفحه الطلبات</h1>
+
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header">
+            <div class="yousef-container" style="position: relative;">
+              <button
+                id="AddButton"
+                class="btn btn-lg btn-primary"
+                style="position: absolute; left: 10px"
+              >
+                +
+              </button>
+              <table class="table table-hover my-0">
+                <thead>
+                  <tr>
+                    <th>delete</th>
+                    <th>ID</th>
+                    <th class="d-none d-xl-table-cell">صوره ال عميل</th>
+                    <th>كميه</th>
+                    <th class="d-none d-md-table-cell">المبلغ الاجمالى</th>
+                    <th>نوع الدفع</th>
+                    <th class="d-none d-md-table-cell">المنتج</th>
+                    <th class="d-none d-md-table-cell">تاريخ</th>
+                  </tr>
+                </thead>
+                <tbody id="dataMonthly">
+                  <% orders.forEach(item => { %>
+                    <th>
+                      <form id="role" action="/deleteOrder/<%= item.ID %>" method="post">
+                        <button class="btn btn-danger">
+                          أحذف
+                        </button>
+                      </form>
+                    </th>
+                    <th><%= item.ID %></th>
+                    <th class="d-none d-xl-table-cell">
+                      <img src="data:image/jpeg;base64,<%= item.IMG %>" style="cursor: pointer;" onclick="resize('data:image/jpeg;base64,<%= item.IMG %>')" width="50px" height="auto" alt="">
+                    </th>
+                    <th><%= item.AMOUNT %></th>
+                    <th class="d-none d-md-table-cell"><%= item.PRICE %></th>
+                    <% if(item.TYPEOFBUY === "two") { %>
+                      <th>كاش</th>
+                    <% }else { %>
+                      <th>قسط</th>
+                    <% } %>
+                    <th class="d-none d-md-table-cell"><%= item.NAME_PRODUCT %></th>
+                    <% let d = new Date(item.dateNow); %>
+                    <th class="d-none d-md-table-cell"><%= d.toDateString() %></th>
+                  </tr>
+                  <% }); %>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+<div class="containerAddOrder hide">
+  <div class="contianer-close">
+    <button id="closeAddButton">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="24"
+        height="24"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="feather feather-x align-middle me-2"
+      >
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+    </button>
+  </div>
+  <form
+    action="/AddOrder"
+    id="form"
+    method="post"
+    enctype="multipart/form-data"
+  >
+    <div class="section">
+      <label for="ID"> صوره ال بطاقه </label>
+      <input class="form-control" type="file" id="ID" name="Img" required />
+    </div>
+    <div class="section">
+      <label for="WhatHeWant"> منتاجات </label>
+      <select id="WhatHeWant" name="want" class="form-select mb-3" required>
+        <option value="">منتج</option>
+        <% products.forEach(item => { %>
+        <option value="<%= item.ID %>"><%= item.NAME_PRODUCT %></option>
+        <% }); %>
+      </select>
+    </div>
+    <div class="section">
+      <label for="price"> سعر الطن واحد </label>
+      <input
+        type="number"
+        class="form-control"
+        name="price"
+        id="price"
+        required
+      />
+    </div>
+    <div class="section">
+      <label for="tel"> رقم التليفون </label>
+      <input
+        type="tel"
+        class="form-control"
+        name="tel"
+        id="tel"
+        required
+      />
+    </div>
+    <div class="section">
+      <label for="amount"> كميه </label>
+      <input
+        type="number"
+        class="form-control"
+        name="amount"
+        id="amount"
+        required
+      />
+    </div>
+    <div class="section">
+      <label for="total"> total </label>
+      <input
+        type="number"
+        class="form-control"
+        name="total"
+        id="total"
+        required
+        readonly
+      />
+    </div>
+    <div class="section">
+      <label for="dateNow"> تاريخ اليوم </label>
+      <input
+        type="date"
+        class="form-control"
+        name="dateNow"
+        id="dateNow"
+        required
+      />
+    </div>
+    <div class="section">
+      <label for="type"> نوع الدفع </label>
+      <select class="form-control" name="type" id="type" required>
+        <option value="">اختر نوع</option>
+        <option value="one">تقسيط</option>
+        <option value="two">كاش</option>
+      </select>
+    </div>
+    <div class="section">
+      <label for="date"> أخر يوم ف التقسيط </label>
+      <input
+        type="date"
+        class="form-control"
+        name="date"
+        id="date"
+        required
+        disabled
+      />
+    </div>
+    <div class="section">
+      <button class="btn btn-lg btn-primary">تسجيل</button>
+    </div>
+  </form>
+</div>
+<div id="notification" class="hide">
+  <h2>
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="white"
+      stroke="currentColor"
+      stroke-width="2"
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      class="feather feather-alert-circle text-danger"
+    >
+      <circle cx="12" cy="12" r="10"></circle>
+      <line x1="12" y1="8" x2="12" y2="12"></line>
+      <line x1="12" y1="16" x2="12.01" y2="16"></line>
+    </svg>
+  </h2>
+  <h2>لايوجد كميه كافيه</h2>
+</div>
+<div 
+id="containerShowImg"
+style="
+  width: 100%; 
+  height: 100%; 
+  position: absolute; 
+  top: 0; 
+  left: 0; 
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(8.7px);
+  -webkit-backdrop-filter: blur(8.7px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  display: none;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+">
+  <button id="ButtonCloseImg" style="position: absolute; top: 10px; right: 10px; border: none; background-color: transparent; font-size: 18px;">
+    x
+  </button>
+  <img src="" id="insertImg" style="width: 600px; height: auto;" alt="">
+</div>
+<script>
+    let amounts = [<% amountProducts.forEach(element => { %>
+      [<%= element.IDPRODUCT %>,<%= element.AMOUNT %>],
+      <% }); %>];
+
+    const WhatHeWant = document.querySelector('#WhatHeWant');
+    let amount = document.querySelector("#amount");
+    let Price = document.querySelector("#price");
+    let total = document.querySelector("#total");
+
+    amount.addEventListener("input" , () => {
+      total.value = amount.value * Price.value;
+    });
+
+    document.querySelector("#form").addEventListener("submit", (e) => {
+      e.preventDefault();
+      let amountThisProduct = [];
+      let value = WhatHeWant.value;
+
+      amounts.forEach(item => {
+        if(item[0] == value) {
+          return (amountThisProduct.push(item[1]));
+        } else {}
+      });
+
+      function notification() {
+        document.getElementById("notification").classList.remove("hide");
+
+        setTimeout(() => {
+          document.getElementById("notification").classList.add("hide");
+        },5000)
+      };
+      setTimeout(() => {
+        if(amount.value > amountThisProduct) {
+          notification();
+        } else {
+          check_form()
+          document.querySelector("#form").submit();
+        }
+      }, 100)
+  });
+  document.getElementById("type").addEventListener("change" , () => {
+    if (document.getElementById("type").value === "one") {
+      document.getElementById("date").disabled = false;
+    } else {
+      document.getElementById("date").disabled = true;
+    }
+  });
+  const AddButton = document.querySelector("#AddButton");
+  const containerAddOrder = document.querySelector(".containerAddOrder");
+  AddButton.addEventListener("click", () => {
+    containerAddOrder.classList.remove("hide")
+  });
+  const closeAddButton = document.querySelector("#closeAddButton");
+  closeAddButton.addEventListener("click" , () => {
+    containerAddOrder.classList.add("hide")
+  })
+  function sleep(lf_ms) {
+    return new Promise((resolve) => setTimeout(resolve, lf_ms));
+  }
+  async function check_form() {
+    document.querySelector(".submitLoad").classList.remove("hide");
+    await seelp(2000);
+    document.querySelector(".submitLoad").classList.remove("hide");
+  }
+  function resize(imgSRC) {
+    console.log(imgSRC)
+    document.getElementById("containerShowImg").style.display = "flex"
+    document.getElementById("insertImg").src = imgSRC;
+  }
+  document.getElementById("ButtonCloseImg").addEventListener("click" , () => {
+    document.getElementById("containerShowImg").style.display = "none"
+  });
+  document.getElementById("role").addEventListener("submit", (e) => {
+    e.preventDefault();
+    if(confirm("سوف نحذف من الحسابات و من قواعد البيانات نهائيا")) {
+    document.getElementById("role").submit();
+    }
+  });
+</script>

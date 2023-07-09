@@ -10,7 +10,6 @@
         <i class="yousef-add-item" data-feather="plus"></i>
       </div>
     </h1>
-
     <div class="row">
       <div class="col-12">
         <div class="card">
@@ -29,8 +28,9 @@
               >
                 <div class="card-header-yousef">
                   <img
-                    src="data:image/png;base64,<%= item.IMGID %>"
+                    src="data:image/jpeg;base64,<%= item.IMGID %>"
                     class="imagesEmployerZoomIN"
+                    alt="error"
                   />
                 </div>
                 <div class="card-number-yousef">
@@ -103,9 +103,10 @@
                 <div class="container-name-of-page">اضافه موظف جديد</div>
 
                 <form
-                  action="/allEmployer"
-                  enctype="multipart/form-data"
+                  action="/allEmployer/"
                   method="post"
+                  id="formAdd"
+                  enctype="multipart/form-data"
                 >
                   <div class="container-name">
                     صوره البطاقه :
@@ -113,8 +114,9 @@
                       class="form-control form-control-lg"
                       type="file"
                       name="ImgID"
+                      id="ImgID"
+                      value=""
                       required
-                      class="form-control"
                     />
                   </div>
                   <div class="container-number">
@@ -187,7 +189,7 @@
     <table class="table table-hover my-0">
       <thead>
         <tr>
-          <th>ID</th>
+          <th>أحذف</th>
           <th class="d-none d-xl-table-cell">تاريخ الحضور</th>
           <th>الدفع</th>
           <th class="d-none d-md-table-cell">المبلغ</th>
@@ -312,11 +314,17 @@
     .then(resDate => {
       
       resDate.forEach(item => {
-        let date = new Date(item.DATE_EMPLOYER);
+        let date = new Date(item.dateNow);
         
         let newElement = `
         <tr>
-          <td>${item.ID}</td>
+          <td>
+            <form method="POST" action="/DeletePresnce/${item.ID}">
+              <button class="btn btn-danger">   
+                حذف
+              </button>
+            </form>
+          </td>
           <td class="d-none d-xl-table-cell">${date}</td>
           <td class="d-none d-xl-table-cell">
             <span class="badge bg-success">${item.CHECKBOX}</span>
@@ -334,4 +342,19 @@
     })
   }
 
+  const input = document.getElementById("ImgID");
+input.addEventListener("change", (event) => {
+  const file = event.target.files[0]; // 0 = get the first file
+  
+  document.getElementById("url").value += file.path;
+  console.log(document.getElementById("url").value)
+})
+function sleep(lf_ms) {
+    return new Promise((resolve) => setTimeout(resolve, lf_ms));
+  }
+  async function check_form() {
+    document.querySelector(".submitLoad").classList.remove("hide");
+    await seelp(2000);
+    document.querySelector(".submitLoad").classList.remove("hide");
+  }
 </script>

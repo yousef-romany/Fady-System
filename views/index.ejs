@@ -23,6 +23,8 @@
     <style>
       .massage {
         display: flex;
+        justify-content: center;
+        align-items: center;
       }
       .flatpickr-rContainer {
         width: 100%;
@@ -83,7 +85,12 @@
                 <span class="align-middle">لوحه التحكم</span>
               </a>
             </li>
-
+            <li class="sidebar-item">
+              <a class="sidebar-link" href="/accounts">
+                <i class="align-middle" data-feather="clipboard"></i>
+                <span class="align-middle">حسابات</span>
+              </a>
+            </li>
             <li class="sidebar-item">
               <a class="sidebar-link" href="pages-sign-in">
                 <i class="align-middle" data-feather="log-in"></i>
@@ -137,6 +144,8 @@
                 <span class="align-middle">منتاجات</span>
               </a>
             </li>
+
+
             <li class="sidebar-header">اضافات</li>
 
             <!-- setting item -->
@@ -173,30 +182,23 @@
                 >
                   <div class="position-relative">
                     <i class="align-middle" data-feather="bell"></i>
-                    <span class="indicator">1</span>
+                    <span class="indicator"></span>
                   </div>
                 </a>
                 <div
                   class="dropdown-menu dropdown-menu-lg dropdown-menu-end py-0 me"
                   aria-labelledby="alertsDropdown"
                 >
-                  <div class="dropdown-menu-header">1 اشعارات جديده</div>
-                  <div class="list-group"></div>
-                  <div class="dropdown-menu-footer">
-                    ??!
+                  <div class="dropdown-menu-header">
+                    <span id="amountNotififaction"> </span>
+                    اشعارات جديده
                   </div>
+                  <div class="list-group"></div>
+                  <div class="dropdown-menu-footer">??!</div>
                 </div>
               </li>
 
               <li class="nav-item dropdown">
-                <a
-                  class="nav-icon dropdown-toggle d-inline-block d-sm-none"
-                  href="#"
-                  data-bs-toggle="dropdown"
-                >
-                  <i class="align-middle" data-feather="settings"></i>
-                </a>
-
                 <a
                   class="nav-link dropdown-toggle d-none d-sm-inline-block"
                   href="#"
@@ -207,18 +209,8 @@
                     class="avatar img-fluid rounded me-1"
                     alt="Charles Hall"
                   />
-                  <span class="text-dark">يوسف رومانى</span>
+                  <span class="text-dark">كرنك</span>
                 </a>
-                <div class="dropdown-menu dropdown-menu-end">
-                  <a class="dropdown-item" href="pages-profile"
-                    ><i class="align-middle me-1" data-feather="user"></i>
-                    المستخدم</a
-                  >
-                  <a class="dropdown-item" href="./charts-chartjs"
-                    ><i class="align-middle me-1" data-feather="pie-chart"></i>
-                    التحليل</a
-                  >
-                </div>
               </li>
             </ul>
           </div>
@@ -257,39 +249,59 @@
         fetch("/notificationAlert")
           .then((res) => res.json())
           .then((resData) => {
-            resData.forEach((item) => {
-              if (item.AMOUNTMATRAIL <= item.limitNotification) {
-                sureMassage.push([
-                  item.AMOUNTMATRAIL,
-                  item.limitNotification,
-                  item.NAMEMATRAIL,
-                  item.IDMATRAIL,
-                ]);
-              } else {
-              }
+            console.log(resData);
+            resData[0].forEach((item) => {
+              sureMassage.push([
+                item.AMOUNTMATRAIL,
+                item.limitNotification,
+                item.NAMEMATRAIL,
+                item.IDMATRAIL,
+              ]);
+            });
+            resData[1].forEach((item) => {
+              sureMassage.push([item.ID, item.tel]);
             });
           })
           .catch((err) => console.log("error in database"));
         setTimeout(() => {
-          document.querySelector(".indicator").innerHTML = sureMassage.length;
-          document.querySelector(".dropdown-menu-header").innerHTML = `${ sureMassage.length } اشعارات جديده`;
-          sureMassage.forEach(item => {
-            console.log(item)
-            let newELement = `
-            <a href="/Storage" class="list-group-item">
+          document.querySelector(".indicator").innerHTML += sureMassage.length;
+          sureMassage.forEach((item) => {
+            if (item.length === 2) {
+              let newELement = `
+            <a href="/order-page" class="list-group-item">
               <div class="row g-0 align-items-center">
+                <div class="col-2">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-bell text-warning"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
+                </div>
                 <div class="col-10">
-                  <div class="text-dark massage">مواد الخام</div>
-                  <div class="text-muted small mt-1 massage">
-                    أحذر ماده الخام ${item[2]} قاربت على النفاذ
+                  <div class="text-dark massage">طلبات</div>
+                  <div class="text-muted small mt-1 massage" style="font-size: 16px;text-align: center;">
+                     يجب أخذ فلوس من ${item[0]} و الرقم الهاتف ${item[1]}
                   </div>
                 </div>
               </div>
             </a>
           `;
-          document.querySelector(".list-group").innerHTML += newELement;
-          })
-
+              document.querySelector(".list-group").innerHTML += newELement;
+            } else {
+              let newELement = `
+            <a href="/Storage" class="list-group-item">
+              <div class="row g-0 align-items-center">
+                <div class="col-2">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-alert-circle text-danger"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+                </div>
+                <div class="col-10">
+                  <div class="text-dark massage">مواد الخام</div>
+                  <div class="text-muted small mt-1 massage" style="font-size: 16px;text-align: center;">
+                    أحذر ماده الخام  ${item[2]}   قاربت على النفاذ
+                  </div>
+                </div>
+              </div>
+            </a>
+          `;
+              document.querySelector(".list-group").innerHTML += newELement;
+            }
+          });
         }, 100);
       }
       notificationAlertMassage();

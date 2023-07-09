@@ -1,0 +1,228 @@
+<% layout('../index') -%>
+<main class="content">
+  <div class="container-fluid p-0 gap-2">
+    <h1 class="h3 mb-3">صفحه حسابات</h1>
+    <div class="containerMonth" style="display: flex; gap: 10px">
+      <input type="radio" value="pricerawmatrail" name="select" id="radioOne" />
+      <label for="radioOne"> أسعار خامات </label>
+
+      <input type="radio" value="orders" name="select" id="radioTwo" />
+      <label for="radioTwo"> orders </label>
+      <input type="radio" value="catch" name="select" id="radiothree" />
+      <label for="radiothree"> مرتبات الشهريه </label>
+      <input type="radio" value="presence" name="select" id="radiofour" />
+      <label for="radiofour"> مرتبات اليوميه </label>
+      <input type="number" id="Date" placeholder="اختر الشهر" style="max-width: 100px;" />
+      <input type="number" id="years" placeholder="اختر سنه" style="max-width: 100px;" />
+      <button onclick="go()">go</button>
+      <h3 id="total">
+
+      </h3>
+    </div>
+    <br />
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header">
+            <table class="table table-hover my-0"> 
+              <thead id="headTable">
+              </thead>
+              <tbody id="bodyTable">
+                <h2 id="alerth1" style="display: none;">
+                  لايوجد فى هذا الشهر
+                </h2>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script>
+  let input = document.querySelectorAll("input[name='select']");
+  let containerTable = document.querySelector(".card-header");
+  let head = document.getElementById("headTable");
+  let body = document.getElementById("bodyTable");
+  function go() {
+    const Dateinput = document.querySelector("#Date").value; 
+    const dataYears = document.getElementById("years").value;
+    if (!Dateinput) {
+      alert("رجاء ادخل التاريخ")
+    } else {
+      let selectedSize; // this is value
+      for (const radioButton of input) {
+        if (radioButton.checked) {
+          selectedSize = radioButton.value;
+          break;
+        }
+      }
+      switch (selectedSize) {
+        case "orders":
+          fetchFunction("orders", Dateinput, dataYears);
+          break;
+        case "pricerawmatrail":
+          fetchFunction("pricerawmatrail", Dateinput, dataYears);
+          break;
+        case "catch":
+          fetchFunction("catch", Dateinput, dataYears);
+          break;
+        case "presence":
+          fetchFunction("presence", Dateinput, dataYears);
+          break;
+        default:
+          alert("اختر جدول");
+          break;
+      }
+    }
+    head.innerHTML = " ";
+    body.innerHTML = " ";
+  }
+  function fetchFunction(nameTable, Dateinput, dataYears) {
+    fetch(`/accounts/${ nameTable }/${ Dateinput }/${ dataYears }`)
+    .then(res => res.json())
+    .then(resData => {
+      console.log(resData["data"]);
+      if(resData["data"].length === 0) {
+        document.getElementById("alerth1").style.display = "block";
+      } else {
+        document.getElementById("alerth1").style.display = "none";
+      }
+      let containerTotal = document.getElementById("total");
+      if(nameTable === "orders") {
+        let total = 0;
+        head.innerHTML += `
+          <tr>
+            <th>
+              ID
+            </th>
+            <th>
+              كميه
+            </th>
+            <th>
+              مبلغ الاجمالى
+            </th>
+          </tr>
+        `;
+        resData["data"].forEach( (item) => {
+          body.innerHTML += `
+            <tr>
+              <th>
+                ${ item.ID }
+              </th>
+              <th>
+                ${ item.AMOUNT }
+              </th>
+              <th>
+                ${ item.PRICE }
+              </th>
+            </tr>
+          `;
+          total += item.PRICE;
+        });
+        containerTotal.innerHTML = ` المبلغ الاجمالى = ${ total } جنيه `;
+      } else if (nameTable === "pricerawmatrail") {
+        let total = 0;
+        head.innerHTML += `
+          <tr>
+            <th>
+              ID
+            </th>
+            <th>
+              سعر
+            </th>
+            <th>
+              تاريخ
+            </th>
+          </tr>
+        `;
+        resData["data"].forEach( (item) => {
+          console.log(item, "hello item")
+          body.innerHTML += `
+            <tr>
+              <th>
+                ${ item.ID }
+              </th>
+              <th>
+                ${ item.PRICEMATRAIL }
+              </th>
+              <th>
+                ${ item.dateNow.split("T")[0]}
+              </th>
+            </tr>
+          `;
+          total += item.PRICEMATRAIL;
+        });
+        containerTotal.innerHTML = ` المبلغ الاجمالى = ${ total } جنيه `;
+      } else if (nameTable === "catch") {
+        let total = 0;
+        head.innerHTML += `
+          <tr>
+            <th>
+              ID
+            </th>
+            <th>
+              مرتب
+            </th>
+            <th>
+              تاريخ
+            </th>
+          </tr>
+        `;
+        resData["data"].forEach( (item) => {
+          console.log(item, "hello item")
+          body.innerHTML += `
+            <tr>
+              <th>
+                ${ item.ID }
+              </th>
+              <th>
+                ${ item.SALLAERY }
+              </th>
+              <th>
+                ${ item.dateNow.split("T")[0]}
+              </th>
+            </tr>
+          `;
+          total += item.SALLAERY;
+        });
+        containerTotal.innerHTML = ` المبلغ الاجمالى = ${ total } جنيه `;
+      } else if (nameTable === "presence") {
+        let total = 0;
+        head.innerHTML += `
+          <tr>
+            <th>
+              ID
+            </th>
+            <th>
+              مرتب يومى
+            </th>
+            <th>
+              تاريخ
+            </th>
+          </tr>
+        `;
+        resData["data"].forEach( (item) => {
+          console.log(item, "hello item")
+          body.innerHTML += `
+            <tr>
+              <th>
+                ${ item.ID }
+              </th>
+              <th>
+                ${ item.SALLARY_EMPLOYER }
+              </th>
+              <th>
+                ${ item.dateNow.split("T")[0]}
+              </th>
+            </tr>
+          `;
+          total += item.SALLARY_EMPLOYER;
+        });
+        containerTotal.innerHTML = ` المبلغ الاجمالى = ${ total } جنيه `;
+      } 
+    })
+    .catch(err => alert(err))
+  }
+</script>

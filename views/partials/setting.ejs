@@ -221,20 +221,20 @@
       form.submit();
     }
   });
-  document
-    .querySelector("#deleteRawMatrail")
-    .addEventListener("submit", (e) => {
+  document.querySelector("#deleteRawMatrail").addEventListener("submit", (e) => {
       e.preventDefault();
       check_form();
-      if (numberOfColumns[0] === 3) {
-        fetch("/EmptyTable", {
-          method: "POST",
-        })
-          .then()
-          .catch((err) => alert(err));
-        document.querySelector("#deleteRawMatrail").submit();
-      } else {
-        document.querySelector("#deleteRawMatrail").submit();
+      if(confirm("سوف نحذف من قواعد البيانات نهائيا")) {
+        if (numberOfColumns[0] === 3) {
+          fetch("/EmptyTable", {
+            method: "POST",
+          })
+            .then()
+            .catch((err) => alert(err));
+          document.querySelector("#deleteRawMatrail").submit();
+        } else {
+          document.querySelector("#deleteRawMatrail").submit();
+        }
       }
     });
 

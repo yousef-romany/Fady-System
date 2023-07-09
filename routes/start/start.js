@@ -6,12 +6,11 @@ module.exports = function (app, connection) {
       response.render("./partials/start", { products: result });
     });
   });
-
   app.post("/AddProduct", (req, res) => {
     let Item = {
-      NAME: req.body.nameProduct,
+      NAME: req.body.name_Product,
     };
-    let sql = `INSERT INTO PRODUCT (NAMEPRODUCT) VALUES ('${Item.NAME}')`;
+    let sql = `INSERT INTO PRODUCT (NAME_PRODUCT) VALUES ('${Item.NAME}')`;
     connection.query(sql, (err, result) => {
       if (err) throw res.send("error in database");
       res.redirect("/Start");
@@ -24,7 +23,6 @@ module.exports = function (app, connection) {
     };
     console.log(data.selectOption);
     let sql = `DELETE FROM product WHERE ID = ${data.selectOption}`;
-    // DELETE FROM table_name WHERE condition;
     connection.query(sql, (err, result) => {
       if (err) {
         res.send("error in database");
@@ -52,7 +50,10 @@ module.exports = function (app, connection) {
   });
   app.get("/getMixSecret/:id", (req, res) => {
     let sql = `
-      SELECT * FROM secretmix WHERE NAMEPRODUCT = ${req.params["id"]};
+    SELECT product.NAME_PRODUCT, secretmix.*  
+		FROM product
+		RIGHT JOIN secretmix ON product.ID = secretmix.NAMEPRODUCT
+        WHERE NAMEPRODUCT = ${req.params["id"]};
     `;
     connection.query(sql, (err, result) => {
       if (err) {

@@ -9,11 +9,14 @@ function createWindow() {
     width: 1600,
     height: 1000,
     webPreferences: {
-      nodeIntegration: true,
+      nodeIntegration: false,
+      devTools: false
     },
+    icon: "avatar.jpg",
   });
 
   mainWindow.loadURL("http://localhost:3000");
+  mainWindow.maximize();
   mainWindow.on("closed", function () {
     mainWindow = null;
   });

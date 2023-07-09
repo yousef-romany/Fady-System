@@ -41,7 +41,7 @@ module.exports = function (app, connection) {
     INSERT INTO storagerawmatrail (IDMATRAIL, AMOUNTMATRAIL) 
     VALUES (${data.select},${data.amount})
     ON DUPLICATE KEY UPDATE AMOUNTMATRAIL = AMOUNTMATRAIL + ${ data.amount };
-    INSERT INTO pricerawmatrail (IDMATRAIL,PRICEMATRAIL,DATEMATRAIL)
+    INSERT INTO pricerawmatrail (IDMATRAIL,PRICEMATRAIL,dateNow)
     VALUES (${data.select},${data.price},"${data.date}")
     `
   

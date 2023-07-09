@@ -1,0 +1,8 @@
+directories:
+  output: dist
+  buildResources: build
+productName: Karnac system
+target: nsis
+icon: avatar.jpg
+files: []
+electronVersion: 20.0.3

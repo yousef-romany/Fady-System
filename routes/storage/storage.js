@@ -1,7 +1,7 @@
 module.exports = function (app, connection) {
   app.get("/Storage", (req, res) => {
     let sql = `
-    SELECT storageproduct.IDPRODUCT, storageproduct.AMOUNT , product.ID , product.NAMEPRODUCT
+    SELECT storageproduct.IDPRODUCT, storageproduct.AMOUNT , product.ID , product.NAME_PRODUCT
     FROM storageproduct
     LEFT JOIN product
     ON storageproduct.IDPRODUCT = product.ID
