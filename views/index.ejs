@@ -145,7 +145,6 @@
               </a>
             </li>
 
-
             <li class="sidebar-header">اضافات</li>
 
             <!-- setting item -->
@@ -276,7 +275,12 @@
                 <div class="col-10">
                   <div class="text-dark massage">طلبات</div>
                   <div class="text-muted small mt-1 massage" style="font-size: 16px;text-align: center;">
-                     يجب أخذ فلوس من ${item[0]} و الرقم الهاتف ${item[1]}
+                     يجب أخذ فلوس من ${item[0]} و الرقم الهاتف ${item[1]} 
+                      <form action="/SubmitOrder/${item[0]}" method="POST" onsubmit="submitOrder()">
+                        <button class="btn btn-lg btn-primary">
+                          تم الاستلام  فلوس
+                        </button>
+                      </from>
                   </div>
                 </div>
               </div>
@@ -305,6 +309,15 @@
         }, 100);
       }
       notificationAlertMassage();
+
+      function submitOrder(e) {
+        e.preventDefault();
+        if (confirm("هل انت متأكد , استلمت فلوس")) {
+          item.submit();
+        } else {
+          return;
+        }
+      }
     </script>
   </body>
 </html>

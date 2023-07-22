@@ -29,7 +29,7 @@ module.exports = function (app, connection, upload) {
     connection.query(sql, (err, result, fields) => {
       if (err) {
         console.log(err);
-        res.send("error in database")
+        res.send("error in database");
       }
       res.redirect("/Employers");
     });
@@ -40,7 +40,7 @@ module.exports = function (app, connection, upload) {
       typeEmployer: req.params["typeEmployer"],
       sallary: req.params["sallary"],
       date: req.body.date,
-      CHECKBOX: req.body.chackBox || "off"
+      CHECKBOX: req.body.chackBox || "off",
     };
 
     const sql = `
@@ -59,7 +59,7 @@ module.exports = function (app, connection, upload) {
       sallary: req.params["sallary"],
       date: req.body.date,
     };
-    
+
     const sql = `INSERT INTO catch (IDEMPLOYER , dateNow , SALLAERY) 
         VALUES (${data.id}, "${data.date}", ${data.sallary})`;
     connection.query(sql, (err, result) => {
@@ -67,19 +67,32 @@ module.exports = function (app, connection, upload) {
       res.redirect("/Employers");
     });
   });
-  app.get("/getEmployerData/:id" , (req , res) => {
+  app.get("/getEmployerData/:id", (req, res) => {
     const id = req.params["id"];
-    const sql = `SELECT * FROM presence WHERE ID_EMPLOYER = ${ id }`;
-    connection.query(sql, (err , result) => {
-      if(err) throw res.send("error in database")
+    const sql = `SELECT * FROM presence WHERE ID_EMPLOYER = ${id}`;
+    connection.query(sql, (err, result) => {
+      if (err) throw res.send("error in database");
       res.json(result);
     });
   });
   app.post("/DeletePresnce/:id", (req, res) => {
-    let sql = ` DELETE FROM presence WHERE ID = ${ req.params['id'] } `;
-    connection.query(sql , (err, result) => {
+    let sql = ` DELETE FROM presence WHERE ID = ${req.params["id"]} `;
+    connection.query(sql, (err, result) => {
       if (err) throw res.send("error in database");
       res.redirect("/Employers");
+    });
+  });
+  app.get("/getById/:date/:dataYears", (req, res) => {
+    let sql = `
+      SELECT * FROM presence
+        WHERE month(dateNow) = ${req.params["date"]} AND year(dateNow) = ${req.params["dataYears"]} ;
+    `;
+    connection.query(sql, (err, result) => {
+      if(err) {
+        res.send("error in database")
+        console.log(err)
+      } 
+      res.json(result);
     });
   });
   // end employer section

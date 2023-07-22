@@ -172,7 +172,7 @@
       <div class="row">
         <div class="row">
           <h3>تحضير : <span id="idEmployer"></span></h3>
-          <input type="date" name="date" required />
+          <input class="form-control" type="date" name="date" required />
         </div>
         <div class="row">
           <h3>
@@ -182,7 +182,7 @@
             <input type="checkbox" id="checkBoxPresence" name="chackBox" />
           </h3>
         </div>
-        <button>تأكيد</button>
+        <button class="btn btn-primary btn-lg">تأكيد</button>
       </div>
     </form>
 
@@ -207,9 +207,9 @@
       <div class="row">
         <div class="row">
           <h3>تحضير : <span id="idEmployerMonthly"></span></h3>
-          <input type="date" required name="date" />
+          <input class="form-control" type="date" required name="date" />
         </div>
-        <button>تأكيد</button>
+        <button class="btn btn-primary btn-lg">تأكيد</button>
       </div>
     </form>
 
@@ -217,12 +217,19 @@
       <div class="row">
         <div class="row">
           <h3>تقبيض : <span id="idEmployerMonthly2"></span></h3>
-          <input type="date" required name="date" id="closeDateMonthly" />
+          <input class="form-control" type="date" required name="date" id="closeDateMonthly" />
         </div>
-        <button>تأكيد</button>
+        <button class="btn btn-primary btn-lg">تأكيد</button>
       </div>
     </form>
+    <input type="number" id="yearss" class="form-control" style="max-width: 200px;" placeholder="اختر السنه"/>
+    <input type="number" id="monthh" class="form-control" style="max-width: 200px;" placeholder="اختر الشهر"/>
+    <button class="btn btn-primary btn-lg" onclick="showData()">
+      go
+    </button>
+    <span id="showLength" style="font-size: 20px; font-weight: 900;">
 
+    </span>
     <table class="table table-hover my-0">
       <thead>
         <tr>
@@ -287,7 +294,6 @@
     document.querySelector(".presenceMonthlyContainer").classList.add("hide");
     document.querySelector("#dataMonthly").innerHTML = "";
   });
-
   const closeDateMonthly = document.querySelector("#closeDateMonthly");
   closeDateMonthly.addEventListener("change", (eo) => {
     if (confirm("هل انت متاكد من حسابك مع الموظف") == false) {
@@ -357,4 +363,41 @@ function sleep(lf_ms) {
     await seelp(2000);
     document.querySelector(".submitLoad").classList.remove("hide");
   }
+  function showData() {
+    let yearss = document.getElementById("yearss").value;
+    let monthh = document.getElementById("monthh").value;
+    if(yearss && monthh) {
+      showDataYear(yearss , monthh);
+    } else {
+      alert("رجاء اختر الشهر و سنه")
+    }
+  }
+  function showDataYear(yearss, monthh) {
+    fetch(`/getById/${monthh}/${yearss}`)
+    .then(res => res.json())
+    .then((resData) => {
+      document.getElementById("dataMonthly").innerHTML = " ";
+      document.getElementById("showLength").innerHTML = resData.length;
+      resData.forEach(item => {
+        let newElement = `
+        <tr>
+          <td>
+            <form method="POST" action="/DeletePresnce/${item.ID}">
+              <button class="btn btn-danger">   
+                حذف
+              </button>
+            </form>
+          </td>
+          <td class="d-none d-xl-table-cell">${item.dateNow.split("T")[0]}</td>
+          <td class="d-none d-xl-table-cell">
+            <span class="badge bg-success">${item.CHECKBOX}</span>
+          </td>
+          <td>${item.SALLARY_EMPLOYER}</td>
+        </tr>
+      `;
+      document.getElementById("dataMonthly").innerHTML += newElement;
+      })
+    })
+    .catch(err => alert("error database"))
+  };
 </script>

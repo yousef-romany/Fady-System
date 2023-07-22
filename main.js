@@ -1,3 +1,4 @@
+process.env['ELECTRON_DISABLE_SECURITY_WARNINGS']=true
 const { app, BrowserWindow } = require("electron");
 
 const server = require("./app");
@@ -10,13 +11,14 @@ function createWindow() {
     height: 1000,
     webPreferences: {
       nodeIntegration: false,
-      devTools: false
+      // devTools: true
     },
     icon: "avatar.jpg",
   });
 
   mainWindow.loadURL("http://localhost:3000");
   mainWindow.maximize();
+  // mainWindow.removeMenu(false)
   mainWindow.on("closed", function () {
     mainWindow = null;
   });

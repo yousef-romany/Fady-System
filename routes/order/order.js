@@ -28,7 +28,7 @@ module.exports = function (app, connection, upload) {
     };
     let sql = `
       INSERT INTO orders (IMG, AMOUNT, PRICE, TYPEOFBUY, LASTDATINBUY, IDPRODUCT, dateNow, tel) VALUES ("${data.Img}", ${data.amount}, ${data.total}, "${data.type}", "${data.date}", ${data.IDPRODUCT}, "${data.dateNow}", "${ data.tel }" );
-      UPDATE storageproduct set AMOUNT = AMOUNT - ${data.amount} WHERE IDPRODUCT = ${data.IDPRODUCT}
+      UPDATE storageproduct set AMOUNT = AMOUNT - ${data.amount} WHERE IDPRODUCT = ${data.IDPRODUCT};
     `;
     connection.query(sql, (error, result) => {
       if (error) {
@@ -44,6 +44,23 @@ module.exports = function (app, connection, upload) {
     };
     let sql = `
       DELETE FROM orders WHERE ID = ${data.ID} ;
+    `;
+    connection.query(sql, (error, result) => {
+      if (error) {
+        console.log(error);
+        res.send("error in database");
+      }
+      res.redirect("/order-page");
+    });
+  });
+
+  app.post("/SubmitOrder/:id", (req, res) => {
+    let data = {
+      ID: req.params["id"],
+      status: "true"
+    };
+    let sql = `
+      UPDATE orders set LASTDATINBUY = "${ data.status }", TYPEOFBUY="two" WHERE ID = ${ data.ID };
     `;
     connection.query(sql, (error, result) => {
       if (error) {
