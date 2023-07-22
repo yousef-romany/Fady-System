@@ -1,8 +1,0 @@
-directories:
-  output: dist
-  buildResources: build
-productName: karnak
-target: nsis
-icon: avatar.jpg
-files: []
-electronVersion: 20.3.12

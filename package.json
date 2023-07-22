@@ -10,7 +10,8 @@
   "license": "ISC",
   "devDependencies": {
     "electron": "^20.3.12",
-    "electron-builder": "^24.4.0"
+    "electron-builder": "^24.4.0",
+    "v8-compile-cache": "^2.3.0"
   },
   "dependencies": {
     "cors": "^2.8.5",
@@ -21,8 +22,11 @@
     "path": "^0.12.7"
   },
   "build": {
+    "appId": "yousef",
+    "win": {
+      "target": ["nsis"]
+    },
     "productName": "karnak",
-    "target": "nsis",
     "icon": "avatar.jpg"
   }
 }
