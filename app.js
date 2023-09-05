@@ -1,3 +1,4 @@
+require('v8-compile-cache');
 const express = require("express");
 const app = express();
 let path = require("path");

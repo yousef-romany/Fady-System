@@ -15,6 +15,8 @@ module.exports = function (app, connection, upload) {
       typeOfEmployer: req.body.typeOfEmployer,
       sallary: req.body.sallary,
     };
+    console.log(req.file)
+    console.log(Item.ImgID)
     let sql = `
     INSERT INTO Emplyers ( 	IMGID ,  	NUMBERPHONE  ,SALLARY ,TYPESALLARY  ) VALUES ( '${Item.ImgID}' , ${Item.Number} , ${Item.sallary} , '${Item.typeOfEmployer}')`;
     connection.query(sql, (err, result) => {

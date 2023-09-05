@@ -65,7 +65,7 @@
 </main>
 <div class="containerAddOrder hide">
   <div class="contianer-close">
-    <button id="closeAddButton">
+    <button id="closeAddButton" class="btn btn-lg btn-primary">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         width="24"
@@ -296,10 +296,12 @@ style="
   document.getElementById("ButtonCloseImg").addEventListener("click" , () => {
     document.getElementById("containerShowImg").style.display = "none"
   });
-  document.getElementById("role").addEventListener("submit", (e) => {
+  document.querySelectorAll("#role").forEach(item => {
+    item.addEventListener("submit", (e) => {
     e.preventDefault();
     if(confirm("سوف نحذف من الحسابات و من قواعد البيانات نهائيا")) {
-    document.getElementById("role").submit();
+      item.submit();
     }
   });
+  })   
 </script>
