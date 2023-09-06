@@ -10,17 +10,16 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" />
 
     <title>Fady System</title>
-    <style>
-      * {
-        direction: rtl;
-      }
-    </style>
     <link href="css/app.css" rel="stylesheet" />
     <link
       href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap"
       rel="stylesheet"
     />
     <style>
+      * {
+        direction: rtl;
+      }
+
       .massage {
         display: flex;
         justify-content: center;
@@ -162,11 +161,15 @@
               </a>
             </li>
             <li class="sidebar-header">مهم</li>
-            <li class="sidebar-item">
-                <i class="align-middle" data-feather="clipboard"></i>
-                <button class="align-middle" id="backup">BackUp</button>
-            </li>
 
+            <li class="sidebar-item">
+              <form action="/backup" method="get">
+                <button class="btn btn-danger btn-lg" id="backup">
+                  <i class="align-middle" data-feather="clipboard"></i>
+                  BackUp
+                </button>
+              </form>
+            </li>
           </ul>
         </div>
       </nav>
@@ -327,6 +330,5 @@
         });
       });
     </script>
-    <script src="./js/backup.js"></script>
   </body>
 </html>

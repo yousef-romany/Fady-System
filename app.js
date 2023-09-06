@@ -1,4 +1,4 @@
-require('v8-compile-cache');
+require("v8-compile-cache");
 const express = require("express");
 const app = express();
 let path = require("path");
@@ -97,3 +97,39 @@ require("./routes/notification/notification")(app, connection);
 // start accounts
 require("./routes/accounts/accounts")(app, connection);
 // end accounts
+
+const mysqldump = require("mysqldump");
+
+app.get("/backup", function (req, res) {
+  let date = new Date().toISOString().slice(0, 10);
+  mysqldump({
+    connection: {
+      host: "localhost",
+      user: "root",
+      password: "root",
+      database: "fady",
+      port: 3307,
+    },
+    dumpToFile: `C://Users//Office//Desktop//${date}.sql`,
+    dump: {
+      data: {
+        format: false,
+      },
+    },
+  });
+  mysqldump({
+    connection: {
+      host: "localhost",
+      user: "root",
+      password: "root",
+      database: "fady",
+      port: 3307,
+    },
+    dumpToFile: `D://Fady_BackUp//${date}.sql`,
+    dump: {
+      data: {
+        format: false,
+      },
+    },
+  });
+});
