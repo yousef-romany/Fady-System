@@ -18,7 +18,7 @@ function createWindow() {
 
   mainWindow.loadURL("http://localhost:3000");
   mainWindow.maximize();
-  // mainWindow.removeMenu(false);
+  mainWindow.removeMenu(false);
   mainWindow.on("closed", function () {
     mainWindow = null;
   });
